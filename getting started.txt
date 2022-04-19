@@ -1,0 +1,69 @@
+# Symbols and thier meanings
+# a region starting with <# and ending with #> indicates a comment section. Anything between the opening and closing is a comment and will not be processed
+# a # indicates a comment and will not be processed when the script is ran
+# @ indicates and array or hash table. Meaning is is a collection of somthing
+# @() the parenthesis next to a @ indicates an array. Where you can store multiple things that are the same. A simple example would be $Array = "Dog, Cat, Chicken"
+# @{} the curly brackets next to a @ indicates a hash table. While similar to an array is quite differnt. It is a keyed collection. Simple example below
+<# 
+$HashTable = @{
+    Pet = "Dog"
+    Breed = "American Bulldog"
+    Name = "Maisey"
+}
+#>
+# You can place multiple hash tables into an array for multiple values
+<#
+$Array += @{
+ Pet = "Dog"
+ Breed = "American Bulldog"
+ Name = "Maisey"
+ }
+ $array += @{
+ Pet = "Cat"
+ Breed = "Void"
+ Name = "Fluffy"
+ }
+ $array will then output the data below
+ Name                           Value
+----                           -----
+Name                           Maisey
+Pet                            Dog
+Breed                          American Bulldog
+Name                           Fluffy
+Pet                            Cat
+Breed                          Void
+
+#>
+<#
+Operators
++ add
+- Minus
+-lt Less than
+-gt Greater than
+-le Less or Equal
+-eq equals
+-contains "" will return if the string within the quotes is found
+-match "" Regex matching , will return if the comparor matches the referenced value against the string
+
+#>
+
+#Database name
+$DBName = "Angel"
+#Database Instance , by default is computername\SQLEXPRESS
+$instance = "Art-SD-LT05\SQLEXPRESS"
+#SA (SQL Administrator) username and password
+$SQLCreds = New-Object System.Management.Automation.PsCredential("sa", (ConvertTo-SecureString "Welcome2!" -AsPlainText -force ))
+#Standard Invoke-Sqlcmd syntax
+#Invoke-Sqlcmd -ServerInstance $instance -Database $DBName -Credential $SQLCreds -Query 
+# Variable saving the SQL Statement to create an empty DB.
+$CreateDb = "CREATE DATABASE Angel;"
+#Creates the databse
+Invoke-Sqlcmd -ServerInstance $instance  -Credential $SQLCreds -Query $CreateDb
+#Sytax for making tables. Each column requires a data type. VARCHAR or variable character accepts anything, but is less efficient when processing. When (MAX) is appended to VARCHAR, 
+#this indicates that there is no character limit to the cell. If there is a number in () that indicates how manay characters will be allowed in the cell. Extra characters beyond the limit will be truncated.
+# The variable below is storing the SQL query in a varible as a string. You can see this by the quotes around it. 
+$NewTable = "CREATE TABLE Table1 (
+    ColumnName VARCHAR(MAX),
+    ColunmName2 VARCHAR(10),
+    ColumnName3 int
+);"
